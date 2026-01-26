@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReviewCV - Upload and Review Your CV</title>
+</head>
+<body>
+    <header>
+        <h1>ReviewCV</h1>
+        <p>Upload your CV and get instant feedback!</p>
+    </header>
+
+    <main>
+        <section id="upload-section">
+            <h2>Upload Your CV</h2>
+            <form action="/upload" method="post" enctype="multipart/form-data">
+                <label for="cv-file">Choose your CV (PDF or DOCX):</label><br><br>
+                <input type="file" id="cv-file" name="cv-file" accept=".pdf,.doc,.docx" required><br><br>
+                <button type="submit">Upload CV</button>
+            </form>
+        </section>
+
+        <section id="review-section">
+            <h2>CV Review</h2>
+            <p>Once your CV is uploaded, you will receive a detailed review here.</p>
+            <div id="review-output">
+                <!-- Review results will appear here after processing -->
+            </div>
+        </section>
+
+        <section id="about-section">
+            <h2>About ReviewCV</h2>
+            <p>ReviewCV helps you optimise your CV for recruiters by providing constructive feedback and suggestions for improvement.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 ReviewCV. All rights reserved.</p>
+    </footer>
+</body>
+</html>
