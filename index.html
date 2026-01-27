@@ -1,42 +1,26 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReviewCV - Upload and Review Your CV</title>
-</head>
-<body>
-    <header>
-        <h1>ReviewCV</h1>
-        <p>Upload your CV and get instant feedback!</p>
-    </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- TODO: Set the document title to the name of your application -->
+    <title>Lovable App</title>
+    <meta name="description" content="Lovable Generated Project" />
+    <meta name="author" content="Lovable" />
 
-    <main>
-        <section id="upload-section">
-            <h2>Upload Your CV</h2>
-            <form action="/upload" method="post" enctype="multipart/form-data">
-                <label for="cv-file">Choose your CV (PDF or DOCX):</label><br><br>
-                <input type="file" id="cv-file" name="cv-file" accept=".pdf,.doc,.docx" required><br><br>
-                <button type="submit">Upload CV</button>
-            </form>
-        </section>
+    <!-- TODO: Update og:title to match your application name -->
+    <meta property="og:title" content="Lovable App" />
+    <meta property="og:description" content="Lovable Generated Project" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
 
-        <section id="review-section">
-            <h2>CV Review</h2>
-            <p>Once your CV is uploaded, you will receive a detailed review here.</p>
-            <div id="review-output">
-                <!-- Review results will appear here after processing -->
-            </div>
-        </section>
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@Lovable" />
+    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+  </head>
 
-        <section id="about-section">
-            <h2>About ReviewCV</h2>
-            <p>ReviewCV helps you optimise your CV for recruiters by providing constructive feedback and suggestions for improvement.</p>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2026 ReviewCV. All rights reserved.</p>
-    </footer>
-</body>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
