@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { analyzeCV } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import type { AnalysisResult } from "@/types/analysis";
-import { ArrowRight, CheckCircle2, FileText, Loader2, Upload, X } from "lucide-react";
+import { ArrowRight, CheckCircle2, FileText, Upload, X } from "lucide-react";
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -141,16 +141,34 @@ const CVUploadArea = () => {
 
             {/* Analysis Progress */}
             {isAnalyzing && (
-              <div className="mt-6">
-                <div className="flex items-center gap-3 mb-3">
-                  <Loader2 className="w-5 h-5 text-primary animate-spin" />
-                  <span className="text-sm font-medium text-foreground">
-                    Analyzing your CV...
-                  </span>
+              <div className="mt-6 flex flex-col items-center gap-4">
+                <div className="relative w-20 h-24">
+                  {/* Document */}
+                  <svg
+                    viewBox="0 0 40 48"
+                    fill="none"
+                    className="w-full h-full text-muted-foreground/40"
+                  >
+                    <rect x="2" y="2" width="36" height="44" rx="3" stroke="currentColor" strokeWidth="2" />
+                    <line x1="10" y1="12" x2="30" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    <line x1="10" y1="18" x2="26" y2="18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    <line x1="10" y1="24" x2="30" y2="24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    <line x1="10" y1="30" x2="22" y2="30" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    <line x1="10" y1="36" x2="28" y2="36" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  </svg>
+                  {/* Magnifying glass */}
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    className="absolute w-14 h-14 text-primary animate-scan-document"
+                  >
+                    <circle cx="10" cy="10" r="6" stroke="currentColor" strokeWidth="2" fill="hsl(var(--background))" fillOpacity="0.8" />
+                    <line x1="14.5" y1="14.5" x2="20" y2="20" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+                  </svg>
                 </div>
-                <div className="h-2 bg-muted rounded-full overflow-hidden">
-                  <div className="h-full gradient-primary rounded-full animate-pulse" style={{ width: "70%" }} />
-                </div>
+                <span className="text-sm font-medium text-foreground">
+                  Analyzing your CV...
+                </span>
               </div>
             )}
 

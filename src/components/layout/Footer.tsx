@@ -85,9 +85,6 @@ const Footer = () => {
           <p className="text-background/50 text-sm">
             © {new Date().getFullYear()} ReviewCV. All rights reserved.
           </p>
-          <p className="text-background/50 text-sm">
-            Made with ❤️ for job seekers everywhere
-          </p>
         </div>
       </div>
     </footer>
