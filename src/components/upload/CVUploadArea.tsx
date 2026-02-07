@@ -1,16 +1,20 @@
 import { Button } from "@/components/ui/button";
+import { analyzeCV } from "@/lib/api";
 import { cn } from "@/lib/utils";
+import type { AnalysisResult } from "@/types/analysis";
 import { ArrowRight, CheckCircle2, FileText, Loader2, Upload, X } from "lucide-react";
 import { useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 const CVUploadArea = () => {
+  const navigate = useNavigate();
   const [isDragging, setIsDragging] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [analysisComplete, setAnalysisComplete] = useState(false);
+  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -31,7 +35,7 @@ const CVUploadArea = () => {
     }
   }, []);
 
-  const handleFileSelect = (selectedFile: File) => {
+  const handleFileSelect = async (selectedFile: File) => {
     if (selectedFile.size > MAX_FILE_SIZE) {
       toast.error("File too large", {
         description: "Please upload a file smaller than 10MB.",
@@ -40,11 +44,17 @@ const CVUploadArea = () => {
     }
     setFile(selectedFile);
     setIsAnalyzing(true);
-    // Simulate analysis
-    setTimeout(() => {
+    setAnalysisResult(null);
+    try {
+      const result = await analyzeCV(selectedFile);
+      setAnalysisResult(result);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Analysis failed";
+      toast.error("Analysis failed", { description: message });
+      setFile(null);
+    } finally {
       setIsAnalyzing(false);
-      setAnalysisComplete(true);
-    }, 3000);
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,7 +67,7 @@ const CVUploadArea = () => {
   const resetUpload = () => {
     setFile(null);
     setIsAnalyzing(false);
-    setAnalysisComplete(false);
+    setAnalysisResult(null);
   };
 
   return (
@@ -145,7 +155,7 @@ const CVUploadArea = () => {
             )}
 
             {/* Analysis Complete */}
-            {analysisComplete && (
+            {analysisResult && (
               <div className="mt-6 space-y-4">
                 <div className="flex items-center gap-2 text-accent">
                   <CheckCircle2 className="w-5 h-5" />
@@ -155,9 +165,9 @@ const CVUploadArea = () => {
                 {/* Quick Score Preview */}
                 <div className="grid grid-cols-3 gap-3">
                   {[
-                    { label: "Overall Score", value: "78%" },
-                    { label: "ATS Ready", value: "85%" },
-                    { label: "Impact Score", value: "72%" },
+                    { label: "Overall Score", value: `${analysisResult.scores.overall}%` },
+                    { label: "ATS Ready", value: `${analysisResult.scores.atsReady}%` },
+                    { label: "Impact Score", value: `${analysisResult.scores.impact}%` },
                   ].map((stat, index) => (
                     <div key={index} className="bg-muted rounded-lg p-3 text-center">
                       <p className="text-lg font-bold text-gradient">{stat.value}</p>
@@ -166,7 +176,16 @@ const CVUploadArea = () => {
                   ))}
                 </div>
 
-                <Button variant="hero" className="w-full" size="lg">
+                <Button
+                  variant="hero"
+                  className="w-full"
+                  size="lg"
+                  onClick={() =>
+                    navigate("/results", {
+                      state: { file, analysisResult },
+                    })
+                  }
+                >
                   View Full Analysis
                 </Button>
               </div>
