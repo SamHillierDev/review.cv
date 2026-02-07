@@ -1,4 +1,4 @@
-import { Brain, Target, Users, Zap, Shield, TrendingUp } from "lucide-react";
+import { Brain, Shield, Target, TrendingUp, Users, Zap } from "lucide-react";
 
 const features = [
   {
@@ -47,7 +47,7 @@ const Features = () => {
             <span className="text-gradient">Stand Out</span>
           </h2>
           <p className="text-lg text-muted-foreground">
-            Our comprehensive suite of tools and services helps you create a CV that 
+            Our comprehensive suite of tools and services helps you create a CV that
             gets noticed by recruiters and passes ATS systems.
           </p>
         </div>

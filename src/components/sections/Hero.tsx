@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles, CheckCircle2 } from "lucide-react";
 import CVUploadArea from "@/components/upload/CVUploadArea";
+import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
 
 const Hero = () => {
   const benefits = [
@@ -37,7 +37,7 @@ const Hero = () => {
 
             {/* Subheadline */}
             <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-xl">
-              Get instant AI analysis of your resume, expert feedback from industry 
+              Get instant AI analysis of your resume, expert feedback from industry
               professionals, and personalized recommendations to stand out.
             </p>
 
@@ -53,8 +53,13 @@ const Hero = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button variant="hero" size="xl" className="group">
-                Analyze My CV Free
+              <Button
+                variant="hero"
+                size="xl"
+                className="group"
+                onClick={() => document.getElementById("cv-upload")?.click()}
+              >
+                Get Your Free CV Review
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
               <Button variant="heroOutline" size="xl">
@@ -62,10 +67,9 @@ const Hero = () => {
               </Button>
             </div>
 
-            {/* Trust indicator */}
-            <p className="text-sm text-muted-foreground mt-6">
+            {/* <p className="text-sm text-muted-foreground mt-6">
               Trusted by <span className="font-semibold text-foreground">50,000+</span> job seekers worldwide
-            </p>
+            </p> */}
           </div>
 
           {/* Right Content - Upload Area */}

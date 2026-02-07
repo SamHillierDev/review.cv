@@ -21,8 +21,8 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
-            <a href="#services" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
-              Services
+            <a href="#how-it-works" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
+              How It Works
             </a>
             <a href="#testimonials" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
               Testimonials

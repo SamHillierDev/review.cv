@@ -1,7 +1,10 @@
-import { useState, useCallback } from "react";
-import { Upload, FileText, CheckCircle2, X, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { ArrowRight, CheckCircle2, FileText, Loader2, Upload, X } from "lucide-react";
+import { useCallback, useState } from "react";
+import { toast } from "sonner";
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 const CVUploadArea = () => {
   const [isDragging, setIsDragging] = useState(false);
@@ -29,6 +32,12 @@ const CVUploadArea = () => {
   }, []);
 
   const handleFileSelect = (selectedFile: File) => {
+    if (selectedFile.size > MAX_FILE_SIZE) {
+      toast.error("File too large", {
+        description: "Please upload a file smaller than 10MB.",
+      });
+      return;
+    }
     setFile(selectedFile);
     setIsAnalyzing(true);
     // Simulate analysis
@@ -52,26 +61,28 @@ const CVUploadArea = () => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative group">
       {/* Glow effect */}
       <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-accent/20 rounded-2xl blur-xl opacity-70" />
-      
+
       <div
         className={cn(
           "relative bg-card rounded-2xl border-2 border-dashed transition-all duration-300 overflow-hidden",
           isDragging && "border-primary bg-primary/5 scale-[1.02]",
-          !isDragging && !file && "border-border hover:border-primary/50",
+          !isDragging && !file && "border-border hover:border-primary/50 group-hover:border-primary/50 group-hover:bg-primary/[0.02] cursor-pointer",
           file && "border-primary/30"
         )}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
+        onClick={() => !file && document.getElementById("cv-upload")?.click()}
       >
         {!file ? (
           /* Upload State */
-          <label className="block cursor-pointer p-8 md:p-12">
+          <div className="p-8 md:p-12">
             <input
               type="file"
+              id="cv-upload"
               accept=".pdf,.docx"
               onChange={handleInputChange}
               className="hidden"
@@ -84,17 +95,17 @@ const CVUploadArea = () => {
                 )} />
               </div>
               <h3 className="text-xl font-semibold text-foreground mb-2">
-                Drop your CV here
+                Upload your CV here
               </h3>
               <p className="text-muted-foreground mb-4">
-                or click to browse files
+                Drag and drop your CV here or click to browse files
               </p>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <FileText className="w-4 h-4" />
                 <span>Supports PDF, DOCX • Max 10MB</span>
               </div>
             </div>
-          </label>
+          </div>
         ) : (
           /* File Selected State */
           <div className="p-8 md:p-12">
@@ -140,7 +151,7 @@ const CVUploadArea = () => {
                   <CheckCircle2 className="w-5 h-5" />
                   <span className="font-medium">Analysis Complete!</span>
                 </div>
-                
+
                 {/* Quick Score Preview */}
                 <div className="grid grid-cols-3 gap-3">
                   {[
@@ -163,6 +174,18 @@ const CVUploadArea = () => {
           </div>
         )}
       </div>
+
+      {!file && (
+        <Button
+          variant="hero"
+          size="lg"
+          className="relative mt-4 w-full"
+          onClick={() => document.getElementById("cv-upload")?.click()}
+        >
+          Get Your Free CV Review
+          <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+        </Button>
+      )}
     </div>
   );
 };

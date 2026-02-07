@@ -2,27 +2,21 @@ import { Star } from "lucide-react";
 
 const testimonials = [
   {
-    name: "Sarah Mitchell",
+    name: "Adam",
+    role: "Data Scientist",
+    content: "Really enjoyed working with Sam, he was really friendly and easy to talk to. Gave clear, actionable and effective suggestions to improve my CV. Explained as to why these improvements were necessary and how they can benefit me. Would highly recommend to others.",
+    rating: 5,
+  },
+  {
+    name: "Bashir",
     role: "Software Engineer",
-    company: "Google",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face",
-    content: "ReviewCV helped me identify exactly what was holding my resume back. After implementing their suggestions, I landed interviews at 5 FAANG companies!",
+    content: "I would recommend Sam's service as he was very quick with replies and set a good focus on my needs. He gave valid critique on my work and gave constructive criticism which enabled me to have a better more robust outcome.",
     rating: 5,
   },
   {
-    name: "Marcus Chen",
-    role: "Marketing Director",
-    company: "Spotify",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
-    content: "The expert consultation was worth every penny. My career coach helped me reframe my entire professional narrative. Incredible value.",
-    rating: 5,
-  },
-  {
-    name: "Emily Rodriguez",
-    role: "Product Manager",
-    company: "Amazon",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
-    content: "I was skeptical at first, but the AI analysis caught things I'd never have noticed. My callback rate went from 5% to over 40%!",
+    name: "Tong",
+    role: "Business Analyst",
+    content: "Sam was incredibly helpful, offering clear advice on improving my CV and LinkedIn profile. I really appreciate his expertise and thoughtful guidance.",
     rating: 5,
   },
 ];
@@ -41,7 +35,7 @@ const Testimonials = () => {
             <span className="text-gradient">Job Seekers</span>
           </h2>
           <p className="text-lg text-muted-foreground">
-            Join thousands of professionals who have transformed their careers 
+            Join thousands of professionals who have transformed their careers
             with ReviewCV.
           </p>
         </div>
@@ -61,25 +55,18 @@ const Testimonials = () => {
               </div>
 
               {/* Content */}
-              <p className="text-foreground leading-relaxed mb-6">
+              <p className="text-foreground leading-relaxed mb-6 line-clamp-4">
                 "{testimonial.content}"
               </p>
 
               {/* Author */}
-              <div className="flex items-center gap-3">
-                <img
-                  src={testimonial.image}
-                  alt={testimonial.name}
-                  className="w-12 h-12 rounded-full object-cover"
-                />
-                <div>
-                  <p className="font-semibold text-foreground">
-                    {testimonial.name}
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    {testimonial.role} at {testimonial.company}
-                  </p>
-                </div>
+              <div>
+                <p className="font-semibold text-foreground">
+                  — {testimonial.name}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {testimonial.role}
+                </p>
               </div>
             </div>
           ))}

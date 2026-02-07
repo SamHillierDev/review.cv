@@ -1,11 +1,11 @@
-import { Upload, Scan, MessageSquare, Rocket } from "lucide-react";
+import { MessageSquare, Rocket, Scan, Upload } from "lucide-react";
 
 const steps = [
   {
     icon: Upload,
     step: "01",
     title: "Upload Your CV",
-    description: "Simply drag and drop your resume in PDF or DOCX format. We support all common file types.",
+    description: "Simply drag and drop your resume in PDF or DOCX format.",
   },
   {
     icon: Scan,
@@ -41,7 +41,7 @@ const HowItWorks = () => {
             <span className="text-gradient">Success</span>
           </h2>
           <p className="text-lg text-muted-foreground">
-            Getting your CV reviewed and improved is quick and easy. 
+            Getting your CV reviewed and improved is quick and easy.
             Follow these simple steps to transform your resume.
           </p>
         </div>
@@ -55,7 +55,7 @@ const HowItWorks = () => {
             {steps.map((step, index) => (
               <div key={index} className="relative group">
                 {/* Step Card */}
-                <div className="bg-card rounded-2xl p-6 md:p-8 border border-border hover:border-primary/30 transition-all duration-300 hover:shadow-lg text-center">
+                <div className="bg-card rounded-2xl p-6 md:p-8 border border-border hover:border-primary/30 transition-all duration-300 hover:shadow-lg text-center h-full">
                   {/* Step Number */}
                   <div className="relative mb-6">
                     <div className="w-16 h-16 mx-auto rounded-full gradient-primary flex items-center justify-center shadow-md group-hover:shadow-glow transition-shadow">

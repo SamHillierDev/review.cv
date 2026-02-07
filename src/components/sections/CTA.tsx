@@ -8,7 +8,7 @@ const CTA = () => {
         <div className="relative max-w-4xl mx-auto">
           {/* Background Decoration */}
           <div className="absolute inset-0 gradient-primary rounded-3xl opacity-10 blur-3xl" />
-          
+
           <div className="relative gradient-primary rounded-3xl p-8 md:p-12 lg:p-16 text-center overflow-hidden">
             {/* Decorative Elements */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
@@ -27,7 +27,7 @@ const CTA = () => {
               </h2>
 
               <p className="text-lg text-primary-foreground/80 max-w-2xl mx-auto mb-8">
-                Join over 50,000 professionals who have already improved their CVs 
+                Join over 50,000 professionals who have already improved their CVs
                 and landed their dream jobs with ReviewCV.
               </p>
 

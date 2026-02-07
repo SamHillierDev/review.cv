@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Check, ArrowRight } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 
 const services = [
   {
@@ -68,7 +68,7 @@ const Services = () => {
             <span className="text-gradient">Success Path</span>
           </h2>
           <p className="text-lg text-muted-foreground">
-            From free AI analysis to expert consultations, we have the right 
+            From free AI analysis to expert consultations, we have the right
             solution for every stage of your career journey.
           </p>
         </div>
@@ -78,11 +78,10 @@ const Services = () => {
           {services.map((service, index) => (
             <div
               key={index}
-              className={`relative rounded-2xl p-6 md:p-8 transition-all duration-300 ${
-                service.popular
+              className={`relative rounded-2xl p-6 md:p-8 transition-all duration-300 ${service.popular
                   ? "bg-card border-2 border-primary shadow-lg scale-105"
                   : "bg-card border border-border hover:border-primary/30 hover:shadow-lg"
-              }`}
+                }`}
             >
               {/* Popular Badge */}
               {service.popular && (
