@@ -4,7 +4,7 @@ const features = [
   {
     icon: Brain,
     title: "AI-Powered Analysis",
-    description: "Advanced machine learning algorithms analyze your CV against millions of successful CVs to identify strengths and improvements.",
+    description: "Advanced machine learning algorithms analyse your CV against millions of successful CVs to identify strengths and improvements.",
   },
   {
     icon: Target,
@@ -14,7 +14,7 @@ const features = [
   {
     icon: Users,
     title: "Expert Consultation",
-    description: "Connect with industry professionals and certified career coaches for personalized one-on-one guidance.",
+    description: "Connect with industry professionals and certified career coaches for personalised one-on-one guidance.",
   },
   {
     icon: Zap,

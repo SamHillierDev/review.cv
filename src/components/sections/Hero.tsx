@@ -38,7 +38,7 @@ const Hero = () => {
             {/* Subheadline */}
             <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-xl">
               Get instant AI analysis of your CV, expert feedback from industry
-              professionals, and personalized recommendations to stand out.
+              professionals, and personalised recommendations to stand out.
             </p>
 
             {/* Benefits */}
@@ -73,7 +73,7 @@ const Hero = () => {
           </div>
 
           {/* Right Content - Upload Area */}
-          <div className="animate-fade-in" style={{ animationDelay: "0.3s" }}>
+          <div className="animate-slide-up">
             <CVUploadArea />
           </div>
         </div>

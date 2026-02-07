@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { analyzeCV } from "@/lib/api";
-import { cn } from "@/lib/utils";
+import { analyseCV } from "@/lib/api";
+import { getEntry, getIndex, saveAnalysis, type AnalysisEntry } from "@/lib/storage";
+import { cn, dataURLtoFile } from "@/lib/utils";
 import type { AnalysisResult } from "@/types/analysis";
 import { ArrowRight, CheckCircle2, FileText, Upload, X } from "lucide-react";
 import { useCallback, useState } from "react";
@@ -12,9 +13,34 @@ const MAX_FILE_SIZE = 1024 * 1024; // 1 MB
 const CVUploadArea = () => {
   const navigate = useNavigate();
   const [isDragging, setIsDragging] = useState(false);
-  const [file, setFile] = useState<File | null>(null);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
+  const [isAnalysing, setIsAnalysing] = useState(false);
+
+  const [saved] = useState(() => {
+    try {
+      const index = getIndex();
+      if (index.length === 0) return null;
+      const latest = index[0];
+      const entry = getEntry(latest.id);
+      if (!entry) return null;
+      return {
+        id: latest.id,
+        analysisResult: entry.analysisResult,
+        fileName: entry.fileName,
+        fileSize: entry.fileSize,
+        file: entry.fileData ? dataURLtoFile(entry.fileData, entry.fileName) : null,
+      };
+    } catch {
+      return null;
+    }
+  });
+
+  const [file, setFile] = useState<File | null>(saved?.file ?? null);
+  const [fileName, setFileName] = useState(saved?.fileName ?? '');
+  const [fileSize, setFileSize] = useState(saved?.fileSize ?? 0);
+  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(saved?.analysisResult ?? null);
+  const [savedId, setSavedId] = useState<string | null>(saved?.id ?? null);
+
+  const hasResult = !!analysisResult || !!file;
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -43,17 +69,37 @@ const CVUploadArea = () => {
       return;
     }
     setFile(selectedFile);
-    setIsAnalyzing(true);
+    setFileName(selectedFile.name);
+    setFileSize(selectedFile.size);
+    setIsAnalysing(true);
     setAnalysisResult(null);
+    setSavedId(null);
     try {
-      const result = await analyzeCV(selectedFile);
+      const result = await analyseCV(selectedFile);
       setAnalysisResult(result);
+      const id = crypto.randomUUID();
+      setSavedId(id);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        try {
+          const entry: AnalysisEntry = {
+            analysisResult: result,
+            fileName: selectedFile.name,
+            fileSize: selectedFile.size,
+            fileData: reader.result as string | null,
+          };
+          saveAnalysis(id, entry);
+        } catch {
+          // localStorage may be full — silently ignore
+        }
+      };
+      reader.readAsDataURL(selectedFile);
     } catch (err) {
       const message = err instanceof Error ? err.message : "Analysis failed";
       toast.error("Analysis failed", { description: message });
       setFile(null);
     } finally {
-      setIsAnalyzing(false);
+      setIsAnalysing(false);
     }
   };
 
@@ -66,8 +112,11 @@ const CVUploadArea = () => {
 
   const resetUpload = () => {
     setFile(null);
-    setIsAnalyzing(false);
+    setFileName('');
+    setFileSize(0);
+    setIsAnalysing(false);
     setAnalysisResult(null);
+    setSavedId(null);
   };
 
   return (
@@ -79,15 +128,15 @@ const CVUploadArea = () => {
         className={cn(
           "relative bg-card rounded-2xl border-2 border-dashed transition-all duration-300 overflow-hidden",
           isDragging && "border-primary bg-primary/5 scale-[1.02]",
-          !isDragging && !file && "border-border hover:border-primary/50 group-hover:border-primary/50 group-hover:bg-primary/[0.02] cursor-pointer",
-          file && "border-primary/30"
+          !isDragging && !hasResult && "border-border hover:border-primary/50 group-hover:border-primary/50 group-hover:bg-primary/[0.02] cursor-pointer",
+          hasResult && "border-primary/30"
         )}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
-        onClick={() => !file && document.getElementById("cv-upload")?.click()}
+        onClick={() => !hasResult && document.getElementById("cv-upload")?.click()}
       >
-        {!file ? (
+        {!hasResult ? (
           /* Upload State */
           <div className="p-8 md:p-12">
             <input
@@ -124,12 +173,12 @@ const CVUploadArea = () => {
                 <FileText className="w-6 h-6 text-primary" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-medium text-foreground truncate">{file.name}</p>
+                <p className="font-medium text-foreground truncate">{fileName}</p>
                 <p className="text-sm text-muted-foreground">
-                  {(file.size / 1024 / 1024).toFixed(2)} MB
+                  {(fileSize / 1024 / 1024).toFixed(2)} MB
                 </p>
               </div>
-              {!isAnalyzing && (
+              {!isAnalysing && (
                 <button
                   onClick={resetUpload}
                   className="p-1 hover:bg-muted rounded-full transition-colors"
@@ -140,7 +189,7 @@ const CVUploadArea = () => {
             </div>
 
             {/* Analysis Progress */}
-            {isAnalyzing && (
+            {isAnalysing && (
               <div className="mt-6 flex flex-col items-center gap-4">
                 <div className="relative w-20 h-24">
                   {/* Document */}
@@ -167,7 +216,7 @@ const CVUploadArea = () => {
                   </svg>
                 </div>
                 <span className="text-sm font-medium text-foreground">
-                  Analyzing your CV...
+                  Analysing your CV...
                 </span>
               </div>
             )}
@@ -199,7 +248,7 @@ const CVUploadArea = () => {
                   className="w-full"
                   size="lg"
                   onClick={() =>
-                    navigate("/results", {
+                    navigate(`/results/${savedId}`, {
                       state: { file, analysisResult },
                     })
                   }
@@ -212,7 +261,7 @@ const CVUploadArea = () => {
         )}
       </div>
 
-      {!file && (
+      {!hasResult && (
         <Button
           variant="hero"
           size="lg"

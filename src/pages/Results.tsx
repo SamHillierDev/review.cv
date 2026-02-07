@@ -1,29 +1,44 @@
-import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
 import DocumentPreview from "@/components/results/DocumentPreview";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { cn } from "@/lib/utils";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import { analyseCV } from "@/lib/api";
+import { deleteAnalysis, getEntry, getIndex, saveAnalysis, type AnalysisEntry, type AnalysisIndexEntry } from "@/lib/storage";
+import { cn, dataURLtoFile } from "@/lib/utils";
 import type { AnalysisResult, SectionStatus } from "@/types/analysis";
 import {
-  ArrowLeft,
-  CheckCircle2,
   AlertTriangle,
+  ArrowLeft,
   Briefcase,
-  XCircle,
-  Lightbulb,
-  Search,
-  Target,
+  CheckCircle2,
+  FileText,
   Info,
+  Lightbulb,
+  Plus,
+  Search,
+  Settings,
+  Trash2,
+  Upload,
+  XCircle
 } from "lucide-react";
-import { useLocation, useNavigate, Navigate } from "react-router-dom";
-
-interface ResultsState {
-  file: File;
-  analysisResult: AnalysisResult;
-}
+import { useRef, useMemo, useState } from "react";
+import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
+import { format } from "date-fns";
+import { toast } from "sonner";
 
 const statusConfig: Record<
   SectionStatus,
@@ -42,15 +57,82 @@ function scoreColor(score: number) {
 }
 
 const Results = () => {
+  const { id } = useParams<{ id: string }>();
   const location = useLocation();
   const navigate = useNavigate();
-  const state = location.state as ResultsState | null;
+  const routerState = location.state as { file?: File; analysisResult?: AnalysisResult } | null;
 
-  if (!state?.file || !state?.analysisResult) {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [entries, setEntries] = useState<AnalysisIndexEntry[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleNewUpload = async (selectedFile: File) => {
+    if (selectedFile.size > 1024 * 1024) {
+      toast.error("File too large", { description: "Please upload a file smaller than 1 MB." });
+      return;
+    }
+    setIsSidebarOpen(false);
+    toast.info("Analysing your CV...");
+    try {
+      const result = await analyseCV(selectedFile);
+      const newId = crypto.randomUUID();
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        try {
+          const entry: AnalysisEntry = {
+            analysisResult: result,
+            fileName: selectedFile.name,
+            fileSize: selectedFile.size,
+            fileData: reader.result as string | null,
+          };
+          saveAnalysis(newId, entry);
+        } catch {
+          // localStorage may be full
+        }
+        navigate(`/results/${newId}`, { state: { file: selectedFile, analysisResult: result } });
+      };
+      reader.readAsDataURL(selectedFile);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Analysis failed";
+      toast.error("Analysis failed", { description: message });
+    }
+  };
+
+  const handleOpenChange = (open: boolean) => {
+    if (open) setEntries(getIndex());
+    setIsSidebarOpen(open);
+  };
+
+  const handleDelete = (entryId: string) => {
+    deleteAnalysis(entryId);
+    const updated = getIndex();
+    setEntries(updated);
+    if (entryId === id) {
+      setIsSidebarOpen(false);
+      if (updated.length > 0) {
+        navigate(`/results/${updated[0].id}`, { replace: true });
+      } else {
+        navigate("/", { replace: true });
+      }
+    }
+  };
+
+  const storedData = useMemo(() => {
+    if (routerState?.analysisResult) return null;
+    if (!id) return null;
+    const entry = getEntry(id);
+    if (!entry) return null;
+    const file = entry.fileData ? dataURLtoFile(entry.fileData, entry.fileName) : null;
+    return { analysisResult: entry.analysisResult, file };
+  }, [id, routerState]);
+
+  const analysisResult: AnalysisResult | undefined = routerState?.analysisResult ?? storedData?.analysisResult;
+  const file: File | null = routerState?.file ?? storedData?.file ?? null;
+
+  if (!analysisResult) {
     return <Navigate to="/" replace />;
   }
 
-  const { file, analysisResult } = state;
   const { scores, summary, prediction, sections, recommendations, keywords } = analysisResult;
 
   return (
@@ -62,7 +144,7 @@ const Results = () => {
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
             <Button
               variant="ghost"
-              onClick={() => navigate("/")}
+              onClick={() => handleOpenChange(true)}
               className="gap-2"
             >
               <ArrowLeft className="w-4 h-4" />
@@ -71,7 +153,7 @@ const Results = () => {
             <h1 className="text-lg font-semibold text-foreground">
               Analysis Results
             </h1>
-            <div className="w-[170px]" /> {/* spacer for centering */}
+            <div className="w-[170px]" />
           </div>
         </div>
 
@@ -80,7 +162,15 @@ const Results = () => {
           <div className="grid lg:grid-cols-2 gap-8">
             {/* Left panel — Document preview */}
             <div className="lg:sticky lg:top-8 lg:self-start">
-              <DocumentPreview file={file} />
+              {file ? (
+                <DocumentPreview file={file} />
+              ) : (
+                <div className="flex flex-col items-center justify-center h-full min-h-[600px] rounded-lg border bg-muted/30 text-muted-foreground">
+                  <FileText className="w-12 h-12 mb-3" />
+                  <p className="text-sm font-medium">Document preview unavailable</p>
+                  <p className="text-xs mt-1">Upload your CV again to see the preview</p>
+                </div>
+              )}
             </div>
 
             {/* Right panel — Analysis */}
@@ -265,6 +355,105 @@ const Results = () => {
         </div>
       </main>
       <Footer />
+
+      {/* History Sidebar */}
+      <Sheet open={isSidebarOpen} onOpenChange={handleOpenChange}>
+        <SheetContent side="left" className="flex flex-col p-0">
+          <SheetHeader className="p-6 pb-4 border-b">
+            <SheetTitle>Analysis History</SheetTitle>
+          </SheetHeader>
+
+          <div className="p-4">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".pdf,.docx"
+              className="hidden"
+              onChange={(e) => {
+                const f = e.target.files?.[0];
+                if (f) handleNewUpload(f);
+                e.target.value = "";
+              }}
+            />
+            <Button
+              variant="outline"
+              className="w-full gap-2"
+              onClick={() => fileInputRef.current?.click()}
+            >
+              <Upload className="w-4 h-4" />
+              Upload Another CV
+            </Button>
+          </div>
+
+          <div className="flex-1 overflow-y-auto px-4 pb-4">
+            {entries.length === 0 ? (
+              <p className="text-sm text-muted-foreground text-center py-8">
+                No analyses yet. Upload a CV to get started.
+              </p>
+            ) : (
+              <div className="space-y-2">
+                {entries.map((entry) => (
+                  <div
+                    key={entry.id}
+                    className={cn(
+                      "group flex items-center gap-3 rounded-lg border p-3 cursor-pointer transition-colors",
+                      entry.id === id
+                        ? "border-primary bg-primary/5"
+                        : "border-border hover:border-primary/30 hover:bg-muted/50"
+                    )}
+                    onClick={() => {
+                      setIsSidebarOpen(false);
+                      navigate(`/results/${entry.id}`);
+                    }}
+                  >
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium truncate">
+                        {entry.fileName}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {format(new Date(entry.createdAt), "d MMM yyyy, HH:mm")}
+                      </p>
+                    </div>
+                    <span className={cn(
+                      "text-sm font-bold shrink-0",
+                      entry.overallScore >= 80
+                        ? "text-green-600 dark:text-green-400"
+                        : entry.overallScore >= 60
+                          ? "text-yellow-600 dark:text-yellow-400"
+                          : "text-red-600 dark:text-red-400"
+                    )}>
+                      {entry.overallScore}%
+                    </span>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <button
+                          onClick={(e) => e.stopPropagation()}
+                          className="p-1 rounded opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-foreground hover:bg-muted transition-all"
+                          aria-label={`Options for ${entry.fileName}`}
+                        >
+                          <Settings className="w-4 h-4" />
+                        </button>
+                      </PopoverTrigger>
+                      <PopoverContent side="right" align="start" className="w-auto p-1">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDelete(entry.id);
+                          }}
+                          className="flex items-center gap-2 rounded px-3 py-2 text-sm text-destructive hover:bg-destructive/10 transition-colors"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                          Delete
+                        </button>
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 };

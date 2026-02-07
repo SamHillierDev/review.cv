@@ -1,12 +1,24 @@
 import { Button } from "@/components/ui/button";
 import { FileText, Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const handleClick = (e: MouseEvent) => {
+      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [isMenuOpen]);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
+    <header ref={headerRef} className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -21,13 +33,13 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
-            <a href="#how-it-works" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
+            <a href="/#how-it-works" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
               How It Works
             </a>
-            <a href="#testimonials" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
+            <a href="/#testimonials" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
               Testimonials
             </a>
-            <a href="#about" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
+            <a href="/#about" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
               About
             </a>
           </nav>
@@ -53,15 +65,15 @@ const Header = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-border/50 animate-slide-up">
+          <div className="md:hidden py-4 border-t border-border/50 animate-slide-down">
             <nav className="flex flex-col gap-4">
-              <a href="#services" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
+              <a href="/#services" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
                 Services
               </a>
-              <a href="#testimonials" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
+              <a href="/#testimonials" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
                 Testimonials
               </a>
-              <a href="#about" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
+              <a href="/#about" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
                 About
               </a>
               <div className="flex flex-col gap-2 pt-4 border-t border-border/50">

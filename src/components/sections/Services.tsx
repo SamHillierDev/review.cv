@@ -37,14 +37,14 @@ const services = [
   },
   {
     name: "Expert Consultation",
-    description: "Personalized career coaching",
+    description: "Personalised career coaching",
     price: "$99",
     period: "per session",
     popular: false,
     features: [
       "Everything in Pro Review",
       "1-hour video call with expert",
-      "Personalized career strategy",
+      "Personalised career strategy",
       "LinkedIn profile review",
       "Interview preparation tips",
       "Follow-up support for 7 days",

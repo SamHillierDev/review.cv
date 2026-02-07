@@ -35,6 +35,11 @@ const CTA = () => {
                 <Button
                   size="xl"
                   className="bg-white text-primary hover:bg-white/90 shadow-lg hover:shadow-xl transition-all group"
+                  onClick={() => {
+                    const el = document.getElementById("cv-upload");
+                    el?.scrollIntoView({ behavior: "smooth", block: "center" });
+                    setTimeout(() => el?.click(), 500);
+                  }}
                 >
                   Get Your Free CV Review
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
