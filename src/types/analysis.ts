@@ -30,7 +30,6 @@ export interface AnalysisResult {
   recommendations: string[];
   keywords: {
     found: string[];
-    missing: string[];
   };
 }
 

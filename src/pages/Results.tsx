@@ -16,6 +16,7 @@ import {
   Lightbulb,
   Search,
   Target,
+  Info,
 } from "lucide-react";
 import { useLocation, useNavigate, Navigate } from "react-router-dom";
 
@@ -79,43 +80,35 @@ const Results = () => {
           <div className="grid lg:grid-cols-2 gap-8">
             {/* Left panel — Document preview */}
             <div className="lg:sticky lg:top-8 lg:self-start">
-              <h2 className="text-sm font-medium text-muted-foreground mb-3">
-                Document Preview
-              </h2>
               <DocumentPreview file={file} />
             </div>
 
             {/* Right panel — Analysis */}
             <div className="space-y-6">
-              {/* Summary */}
+              {/* AI disclaimer */}
+              <div className="flex items-start gap-2 rounded-lg border border-border/50 bg-muted/40 px-4 py-3 text-xs text-muted-foreground">
+                <Info className="w-4 h-4 mt-0.5 shrink-0" />
+                <p>This analysis is AI-generated and may not be fully accurate. Use it as guidance, not as a definitive assessment.</p>
+              </div>
+
+              {/* Overview: Summary, Prediction, Scores */}
               <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Summary</CardTitle>
-                </CardHeader>
-                <CardContent>
+                <CardContent className="pt-6 space-y-6">
                   <p className="text-muted-foreground leading-relaxed">
                     {summary}
                   </p>
-                </CardContent>
-              </Card>
 
-              {/* Prediction */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <Briefcase className="w-5 h-5" />
-                    Predicted Role
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-semibold text-foreground">
-                        {prediction.jobTitle}
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        {prediction.yearsExperience < 1 ? "<1 year" : `${prediction.yearsExperience}+ ${prediction.yearsExperience === 1 ? "year" : "years"}`} experience
-                      </p>
+                  <div className="flex items-center justify-between rounded-lg border p-4">
+                    <div className="flex items-center gap-3">
+                      <Briefcase className="w-5 h-5 text-muted-foreground" />
+                      <div>
+                        <p className="font-semibold text-foreground">
+                          {prediction.jobTitle}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          {prediction.yearsExperience < 1 ? "<1 year" : `${prediction.yearsExperience}+ ${prediction.yearsExperience === 1 ? "year" : "years"}`} experience
+                        </p>
+                      </div>
                     </div>
                     <p className="text-lg font-bold text-gradient">
                       {new Intl.NumberFormat("en-GB", { style: "currency", currency: prediction.salaryRange.currency, maximumFractionDigits: 0 }).format(prediction.salaryRange.min)}
@@ -123,18 +116,7 @@ const Results = () => {
                       {new Intl.NumberFormat("en-GB", { style: "currency", currency: prediction.salaryRange.currency, maximumFractionDigits: 0 }).format(prediction.salaryRange.max)}
                     </p>
                   </div>
-                </CardContent>
-              </Card>
 
-              {/* Scores */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <Target className="w-5 h-5" />
-                    Scores
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
                   <div className="grid sm:grid-cols-3 gap-6">
                     {[
                       { label: "Overall", value: scores.overall },
@@ -158,7 +140,7 @@ const Results = () => {
               {/* Section-by-section feedback */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Section Feedback</CardTitle>
+                  <CardTitle className="text-lg">Feedback</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {sections.filter((s) => s.status !== "missing").map((section) => {
@@ -189,16 +171,30 @@ const Results = () => {
                           {section.feedback}
                         </p>
                         {section.suggestions.length > 0 && (
-                          <ul className="space-y-1">
-                            {section.suggestions.map((s, i) => (
-                              <li
-                                key={i}
-                                className="text-sm text-muted-foreground flex items-start gap-2"
-                              >
-                                <span className="text-primary mt-0.5">-</span>
-                                {s}
-                              </li>
-                            ))}
+                          <ul className="space-y-2">
+                            {section.suggestions.map((s, i) => {
+                              const exampleIndex = s.indexOf("Example: ");
+                              const suggestion = exampleIndex !== -1 ? s.slice(0, exampleIndex).trimEnd() : s;
+                              const example = exampleIndex !== -1 ? s.slice(exampleIndex + "Example: ".length) : null;
+                              return (
+                                <li
+                                  key={i}
+                                  className="text-sm text-muted-foreground"
+                                >
+                                  <div className="flex items-start gap-2">
+                                    <span className="text-primary mt-0.5">-</span>
+                                    <div>
+                                      <span>{suggestion}</span>
+                                      {example && (
+                                        <p className="mt-1 text-xs italic text-muted-foreground/70 border-l-2 border-primary/30 pl-2">
+                                          Example: {example}
+                                        </p>
+                                      )}
+                                    </div>
+                                  </div>
+                                </li>
+                              );
+                            })}
                           </ul>
                         )}
                       </div>
@@ -242,27 +238,12 @@ const Results = () => {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {keywords.found.length > 0 && (
-                    <div>
-                      <p className="text-sm font-medium mb-2">Found</p>
-                      <div className="flex flex-wrap gap-2">
-                        {keywords.found.map((kw) => (
-                          <Badge key={kw} variant="secondary">
-                            {kw}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  {keywords.missing.length > 0 && (
-                    <div>
-                      <p className="text-sm font-medium mb-2">Missing</p>
-                      <div className="flex flex-wrap gap-2">
-                        {keywords.missing.map((kw) => (
-                          <Badge key={kw} variant="outline">
-                            {kw}
-                          </Badge>
-                        ))}
-                      </div>
+                    <div className="flex flex-wrap gap-2">
+                      {keywords.found.map((kw) => (
+                        <Badge key={kw} variant="secondary">
+                          {kw}
+                        </Badge>
+                      ))}
                     </div>
                   )}
                 </CardContent>
@@ -273,9 +254,11 @@ const Results = () => {
                 variant="hero"
                 size="lg"
                 className="w-full"
-                onClick={() => navigate("/")}
+                asChild
               >
-                Upload Another CV
+                <a href="#" target="_blank" rel="noopener noreferrer">
+                  Book a Consultation
+                </a>
               </Button>
             </div>
           </div>
