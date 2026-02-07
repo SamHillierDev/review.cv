@@ -27,6 +27,9 @@ const Header = () => {
             <a href="#testimonials" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
               Testimonials
             </a>
+            <a href="#about" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
+              About
+            </a>
           </nav>
 
           {/* Desktop CTA */}
@@ -57,6 +60,9 @@ const Header = () => {
               </a>
               <a href="#testimonials" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
                 Testimonials
+              </a>
+              <a href="#about" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
+                About
               </a>
               <div className="flex flex-col gap-2 pt-4 border-t border-border/50">
                 <Button variant="ghost" size="sm">

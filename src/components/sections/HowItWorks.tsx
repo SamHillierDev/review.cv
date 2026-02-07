@@ -5,7 +5,7 @@ const steps = [
     icon: Upload,
     step: "01",
     title: "Upload Your CV",
-    description: "Simply drag and drop your resume in PDF or DOCX format.",
+    description: "Simply drag and drop your CV in PDF or DOCX format.",
   },
   {
     icon: Scan,
@@ -42,7 +42,7 @@ const HowItWorks = () => {
           </h2>
           <p className="text-lg text-muted-foreground">
             Getting your CV reviewed and improved is quick and easy.
-            Follow these simple steps to transform your resume.
+            Follow these simple steps to transform your CV.
           </p>
         </div>
 

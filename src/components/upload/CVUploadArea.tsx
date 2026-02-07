@@ -7,7 +7,7 @@ import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const MAX_FILE_SIZE = 1024 * 1024; // 1 MB
 
 const CVUploadArea = () => {
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ const CVUploadArea = () => {
   const handleFileSelect = async (selectedFile: File) => {
     if (selectedFile.size > MAX_FILE_SIZE) {
       toast.error("File too large", {
-        description: "Please upload a file smaller than 10MB.",
+        description: "Please upload a file smaller than 1 MB.",
       });
       return;
     }
@@ -112,7 +112,7 @@ const CVUploadArea = () => {
               </p>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <FileText className="w-4 h-4" />
-                <span>Supports PDF, DOCX • Max 10MB</span>
+                <span>Supports PDF, DOCX • Max 1 MB</span>
               </div>
             </div>
           </div>

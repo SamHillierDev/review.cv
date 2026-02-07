@@ -27,7 +27,7 @@ const CTA = () => {
               </h2>
 
               <p className="text-lg text-primary-foreground/80 max-w-2xl mx-auto mb-8">
-                Join over 50,000 professionals who have already improved their CVs
+                Join other professionals who have already improved their CVs
                 and landed their dream jobs with ReviewCV.
               </p>
 
@@ -44,7 +44,7 @@ const CTA = () => {
                   size="xl"
                   className="text-primary-foreground border-2 border-white/30 hover:bg-white/10"
                 >
-                  Schedule a Consultation
+                  Book a Consultation
                 </Button>
               </div>
             </div>

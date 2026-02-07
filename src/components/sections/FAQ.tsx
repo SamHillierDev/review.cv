@@ -9,32 +9,22 @@ const faqs = [
   {
     question: "What file formats do you support?",
     answer:
-      "We currently support PDF and DOCX files up to 10MB. These are the most common formats used by job seekers and accepted by applicant tracking systems.",
+      "We currently support PDF and DOCX files up to 1 MB. These are the most common formats used by job seekers and accepted by applicant tracking systems.",
   },
   {
     question: "How does the AI analysis work?",
     answer:
-      "Our AI scans your CV for key factors that recruiters and ATS systems look for, including keyword optimization, formatting consistency, impact metrics, and section structure. You get a detailed score breakdown with actionable suggestions.",
+      "Our AI scans your CV for key factors that recruiters and ATS systems look for, including keyword optimisation, formatting consistency, impact metrics, and section structure. You get a detailed score breakdown with actionable suggestions.",
   },
   {
     question: "Is my CV data kept private?",
     answer:
-      "Absolutely. Your CV is processed securely and never shared with third parties. We delete uploaded files after analysis is complete. Your privacy is our top priority.",
-  },
-  {
-    question: "How accurate is the ATS compatibility check?",
-    answer:
-      "Our ATS check is trained on the parsing logic of major applicant tracking systems used by Fortune 500 companies. It identifies formatting issues, missing keywords, and structural problems that could cause your CV to be filtered out.",
-  },
-  {
-    question: "Can I review my CV multiple times?",
-    answer:
-      "Yes! You can upload revised versions of your CV as many times as you like to track your improvements and ensure each change moves your score in the right direction.",
+      "Absolutely. Your CV is processed securely and never shared with third parties. Your privacy is our top priority.",
   },
   {
     question: "How long does the analysis take?",
     answer:
-      "Most CV analyses complete in under 30 seconds. You'll receive a full score breakdown, section-by-section feedback, and prioritized recommendations as soon as the analysis finishes.",
+      "Most CV analyses complete in under 10 seconds. You'll receive a full score breakdown, section-by-section feedback, and prioritized recommendations as soon as the analysis finishes.",
   },
 ];
 

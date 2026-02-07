@@ -4,12 +4,12 @@ const features = [
   {
     icon: Brain,
     title: "AI-Powered Analysis",
-    description: "Advanced machine learning algorithms analyze your CV against millions of successful resumes to identify strengths and improvements.",
+    description: "Advanced machine learning algorithms analyze your CV against millions of successful CVs to identify strengths and improvements.",
   },
   {
     icon: Target,
-    title: "ATS Optimization",
-    description: "Ensure your CV passes Applicant Tracking Systems with our keyword optimization and formatting recommendations.",
+    title: "ATS optimisation",
+    description: "Ensure your CV passes Applicant Tracking Systems with our keyword optimisation and formatting recommendations.",
   },
   {
     icon: Users,

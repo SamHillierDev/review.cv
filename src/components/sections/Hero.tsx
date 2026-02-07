@@ -37,7 +37,7 @@ const Hero = () => {
 
             {/* Subheadline */}
             <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-xl">
-              Get instant AI analysis of your resume, expert feedback from industry
+              Get instant AI analysis of your CV, expert feedback from industry
               professionals, and personalized recommendations to stand out.
             </p>
 
