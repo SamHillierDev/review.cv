@@ -94,10 +94,23 @@
 /* ── Navbar ─────────────────────────────────────────── */
 
 .navbar {
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--ifm-toc-border-color);
   box-shadow: none;
+  background: transparent !important;
+}
+
+.navbar__inner {
+  background: var(--ifm-navbar-background-color);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.navbar-sidebar {
+  background: var(--ifm-background-color);
+}
+
+.navbar-sidebar__backdrop {
+  background: rgba(0, 0, 0, 0.6);
 }
 
 /* Hide the default logo image since we use a custom component */
