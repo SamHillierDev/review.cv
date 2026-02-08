@@ -141,19 +141,20 @@ const Results = () => {
       <main className="flex-1 pt-[calc(4rem+57px)]">
         {/* Top bar */}
         <div className="fixed top-16 left-0 right-0 z-40 border-b bg-card/80 backdrop-blur-md">
-          <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="container mx-auto px-4 py-3 relative flex items-center justify-center">
             <Button
               variant="ghost"
+              size="sm"
               onClick={() => handleOpenChange(true)}
-              className="gap-2"
+              className="gap-1.5 absolute left-4"
             >
               <ArrowLeft className="w-4 h-4" />
-              Upload Another CV
+              <span className="hidden sm:inline">Upload Another CV</span>
+              <span className="sm:hidden">Upload</span>
             </Button>
-            <h1 className="text-lg font-semibold text-foreground">
+            <h1 className="text-sm sm:text-lg font-semibold text-foreground">
               Analysis Results
             </h1>
-            <div className="w-[170px]" />
           </div>
         </div>
 

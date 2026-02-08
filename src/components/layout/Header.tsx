@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { FileText, Menu, X } from "lucide-react";
+import { getLatestAnalysisId } from "@/hooks/use-latest-analysis";
+import { ArrowRight, FileText, Menu, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
+  const [latestId] = useState(getLatestAnalysisId);
 
   useEffect(() => {
     if (!isMenuOpen) return;
@@ -48,13 +50,25 @@ const Header = () => {
           </nav>
 
           {/* Desktop CTA */}
-          <div className="hidden md:flex items-center gap-3">
-            <Button variant="ghost" size="sm">
-              Log In
-            </Button>
-            <Button variant="hero" size="sm">
-              Get Started Free
-            </Button>
+          <div className="hidden md:flex items-center">
+            {latestId ? (
+              <Button variant="hero" size="sm" className="group" asChild>
+                <a href={`/results/${latestId}`}>
+                  View CV Analysis
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </a>
+              </Button>
+            ) : (
+              <Button
+                variant="hero"
+                size="sm"
+                className="group"
+                onClick={() => document.getElementById("cv-upload")?.click()}
+              >
+                Get Your Free CV Review
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            )}
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -82,13 +96,25 @@ const Header = () => {
               <a href="/docs" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
                 Docs
               </a>
-              <div className="flex flex-col gap-2 pt-4 border-t border-border/50">
-                <Button variant="ghost" size="sm">
-                  Log In
-                </Button>
-                <Button variant="hero" size="sm">
-                  Get Started Free
-                </Button>
+              <div className="pt-4 border-t border-border/50">
+                {latestId ? (
+                  <Button variant="hero" size="sm" className="w-full group" asChild>
+                    <a href={`/results/${latestId}`}>
+                      View CV Analysis
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </a>
+                  </Button>
+                ) : (
+                  <Button
+                    variant="hero"
+                    size="sm"
+                    className="w-full group"
+                    onClick={() => document.getElementById("cv-upload")?.click()}
+                  >
+                    Get Your Free CV Review
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                )}
               </div>
             </nav>
           </div>

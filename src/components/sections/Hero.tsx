@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
+import { getLatestAnalysisId } from "@/hooks/use-latest-analysis";
 import CVUploadArea from "@/components/upload/CVUploadArea";
 import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
+import { useState } from "react";
 
 const Hero = () => {
+  const [latestId] = useState(getLatestAnalysisId);
   const benefits = [
     "AI-powered analysis in seconds",
     "Expert feedback from recruiters",
@@ -53,15 +56,24 @@ const Hero = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button
-                variant="hero"
-                size="xl"
-                className="group"
-                onClick={() => document.getElementById("cv-upload")?.click()}
-              >
-                Get Your Free CV Review
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
+              {latestId ? (
+                <Button variant="hero" size="xl" className="group" asChild>
+                  <a href={`/results/${latestId}`}>
+                    View CV Analysis
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </a>
+                </Button>
+              ) : (
+                <Button
+                  variant="hero"
+                  size="xl"
+                  className="group"
+                  onClick={() => document.getElementById("cv-upload")?.click()}
+                >
+                  Get Your Free CV Review
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              )}
               <Button variant="heroOutline" size="xl">
                 Book a Consultation
               </Button>

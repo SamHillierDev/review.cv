@@ -245,7 +245,7 @@ const CVUploadArea = () => {
 
                 <Button
                   variant="hero"
-                  className="w-full"
+                  className="w-full group"
                   size="lg"
                   onClick={() =>
                     navigate(`/results/${savedId}`, {
@@ -253,7 +253,8 @@ const CVUploadArea = () => {
                     })
                   }
                 >
-                  View Full Analysis
+                  View CV Analysis
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </div>
             )}

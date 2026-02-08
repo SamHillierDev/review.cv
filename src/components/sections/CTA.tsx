@@ -1,7 +1,10 @@
 import { Button } from "@/components/ui/button";
+import { getLatestAnalysisId } from "@/hooks/use-latest-analysis";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { useState } from "react";
 
 const CTA = () => {
+  const [latestId] = useState(getLatestAnalysisId);
   return (
     <section className="py-20 md:py-32 bg-background">
       <div className="container mx-auto px-4">
@@ -32,18 +35,31 @@ const CTA = () => {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button
-                  size="xl"
-                  className="bg-white text-primary hover:bg-white/90 shadow-lg hover:shadow-xl transition-all group"
-                  onClick={() => {
-                    const el = document.getElementById("cv-upload");
-                    el?.scrollIntoView({ behavior: "smooth", block: "center" });
-                    setTimeout(() => el?.click(), 500);
-                  }}
-                >
-                  Get Your Free CV Review
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
+                {latestId ? (
+                  <Button
+                    size="xl"
+                    className="bg-white text-primary hover:bg-white/90 shadow-lg hover:shadow-xl transition-all group"
+                    asChild
+                  >
+                    <a href={`/results/${latestId}`}>
+                      View CV Analysis
+                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    </a>
+                  </Button>
+                ) : (
+                  <Button
+                    size="xl"
+                    className="bg-white text-primary hover:bg-white/90 shadow-lg hover:shadow-xl transition-all group"
+                    onClick={() => {
+                      const el = document.getElementById("cv-upload");
+                      el?.scrollIntoView({ behavior: "smooth", block: "center" });
+                      setTimeout(() => el?.click(), 500);
+                    }}
+                  >
+                    Get Your Free CV Review
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                )}
                 <Button
                   variant="ghost"
                   size="xl"
