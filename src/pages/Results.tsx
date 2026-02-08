@@ -162,7 +162,7 @@ const Results = () => {
         <div className="container mx-auto px-4 py-8">
           <div className="grid lg:grid-cols-2 gap-8">
             {/* Left panel — Document preview */}
-            <div className="lg:sticky lg:top-8 lg:self-start">
+            <div className="lg:sticky lg:top-[calc(4rem+57px+2rem)] lg:self-start">
               {file ? (
                 <DocumentPreview file={file} />
               ) : (
