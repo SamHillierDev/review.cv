@@ -15,8 +15,8 @@ const footerLinks = {
   ],
   support: [
     { label: 'Contact', href: 'https://review.cv/#' },
-    { label: 'Privacy Policy', href: 'https://review.cv/#' },
-    { label: 'Terms of Service', href: 'https://review.cv/#' },
+    { label: 'Privacy Policy', href: 'https://review.cv/privacy' },
+    { label: 'Terms of Service', href: 'https://review.cv/terms' },
   ],
 };
 

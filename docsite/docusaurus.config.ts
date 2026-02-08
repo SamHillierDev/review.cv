@@ -59,6 +59,7 @@ const config: Config = {
           href: 'https://review.cv',
           label: 'Back to ReviewCV',
           position: 'right',
+          target: '_self',
         },
       ],
     },

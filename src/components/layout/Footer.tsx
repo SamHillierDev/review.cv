@@ -6,11 +6,12 @@ const Footer = () => {
       { label: "How It Works", href: "#how-it-works" },
       { label: "Testimonials", href: "#testimonials" },
       { label: "FAQ", href: "#faq" },
+      { label: "Docs", href: "/docs" },
     ],
     support: [
       { label: "Contact", href: "#" },
-      { label: "Privacy Policy", href: "#" },
-      { label: "Terms of Service", href: "#" },
+      { label: "Privacy Policy", href: "/privacy" },
+      { label: "Terms of Service", href: "/terms" },
     ],
   };
 
