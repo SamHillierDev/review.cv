@@ -36,6 +36,15 @@ jobs:
       - name: Build project
         run: npm run build
 
+      - name: Install docsite dependencies
+        run: npm --prefix docsite install
+
+      - name: Build docsite
+        run: npm --prefix docsite run build
+
+      - name: Copy docsite into dist
+        run: cp -r docsite/build dist/docs
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

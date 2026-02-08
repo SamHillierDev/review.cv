@@ -1,0 +1,407 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap');
+
+/*
+ * Theme colors derived from the main ReviewCV site (src/index.css).
+ * Primary: hsl(200 85% 45%) — teal/cyan blue
+ * Accent:  hsl(165 60% 45%) — teal green
+ */
+
+:root {
+  /* Primary palette — teal/cyan to match main site */
+  --ifm-color-primary: #1193d4;
+  --ifm-color-primary-dark: #0f83bd;
+  --ifm-color-primary-darker: #0d73a5;
+  --ifm-color-primary-darkest: #0a5276;
+  --ifm-color-primary-light: #2badee;
+  --ifm-color-primary-lighter: #5abff2;
+  --ifm-color-primary-lightest: #89d1f5;
+
+  /* Typography — Inter for body, Playfair Display for headings */
+  --ifm-font-family-base: 'Inter', system-ui, -apple-system, sans-serif;
+  --ifm-heading-font-family: 'Playfair Display', Georgia, serif;
+  --ifm-font-weight-semibold: 600;
+  --ifm-heading-font-weight: 700;
+
+  /* Background & surface — cool blue-gray from main site */
+  --ifm-background-color: #f9fafb;
+  --ifm-background-surface-color: #ffffff;
+  --ifm-font-color-base: #1b2232;
+
+  /* Layout */
+  --ifm-code-font-size: 95%;
+  --ifm-global-radius: 0.75rem;
+  --ifm-code-border-radius: 0.5rem;
+
+  /* Borders & shadows */
+  --ifm-color-emphasis-300: #e2e5e9;
+  --ifm-hr-background-color: #e2e5e9;
+  --ifm-toc-border-color: #e2e5e9;
+
+  /* Code highlighting */
+  --docusaurus-highlighted-code-line-bg: rgba(17, 147, 212, 0.1);
+
+  /* Navbar */
+  --ifm-navbar-background-color: rgba(249, 250, 251, 0.8);
+  --ifm-navbar-shadow: 0 1px 0 0 #e2e5e9;
+  --ifm-navbar-link-color: #676b73;
+  --ifm-navbar-link-hover-color: #1b2232;
+
+  /* Footer */
+  --ifm-footer-background-color: #1b2232;
+  --ifm-footer-color: #c8cbd0;
+  --ifm-footer-link-color: #e2e5e9;
+  --ifm-footer-link-hover-color: #ffffff;
+  --ifm-footer-title-color: #ffffff;
+}
+
+[data-theme='dark'] {
+  /* Primary palette — lighter teal for dark mode readability */
+  --ifm-color-primary: #30abe8;
+  --ifm-color-primary-dark: #1a9fe0;
+  --ifm-color-primary-darker: #1891cc;
+  --ifm-color-primary-darkest: #1271a1;
+  --ifm-color-primary-light: #5ebfee;
+  --ifm-color-primary-lighter: #8cd0f2;
+  --ifm-color-primary-lightest: #bae3f7;
+
+  /* Background — deep dark blue from main site */
+  --ifm-background-color: #0f1319;
+  --ifm-background-surface-color: #1a1f2e;
+  --ifm-font-color-base: #f0f2f4;
+
+  /* Borders */
+  --ifm-color-emphasis-300: #2a3040;
+  --ifm-hr-background-color: #2a3040;
+  --ifm-toc-border-color: #2a3040;
+
+  /* Code highlighting */
+  --docusaurus-highlighted-code-line-bg: rgba(48, 171, 232, 0.15);
+
+  /* Navbar */
+  --ifm-navbar-background-color: rgba(15, 19, 25, 0.8);
+  --ifm-navbar-shadow: 0 1px 0 0 rgba(42, 48, 64, 0.5);
+  --ifm-navbar-link-color: #9ba1ab;
+  --ifm-navbar-link-hover-color: #f0f2f4;
+
+  /* Footer */
+  --ifm-footer-background-color: #0a0d12;
+  --ifm-footer-color: #9ba1ab;
+  --ifm-footer-link-color: #c8cbd0;
+  --ifm-footer-link-hover-color: #ffffff;
+  --ifm-footer-title-color: #f0f2f4;
+}
+
+/* ── Navbar ─────────────────────────────────────────── */
+
+.navbar {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--ifm-toc-border-color);
+  box-shadow: none;
+}
+
+/* Hide the default logo image since we use a custom component */
+.navbar__brand .navbar__logo {
+  display: none;
+}
+
+.navbar__title {
+  display: none;
+}
+
+.navbar__link {
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+/* ── Custom Logo (matches main site) ────────────────── */
+
+.custom-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none !important;
+}
+
+.custom-logo:hover {
+  text-decoration: none !important;
+}
+
+.custom-logo__icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  background: linear-gradient(135deg, hsl(200, 85%, 45%) 0%, hsl(180, 70%, 40%) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 2px 8px -2px rgba(17, 147, 212, 0.3);
+  transition: box-shadow 0.2s;
+  flex-shrink: 0;
+}
+
+.custom-logo:hover .custom-logo__icon {
+  box-shadow: 0 0 24px -6px rgba(17, 147, 212, 0.4);
+}
+
+.custom-logo__text {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--ifm-font-color-base);
+}
+
+.custom-logo__highlight {
+  background: linear-gradient(135deg, hsl(200, 85%, 45%) 0%, hsl(180, 70%, 40%) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Sidebar ────────────────────────────────────────── */
+
+.menu__link {
+  font-size: 0.875rem;
+  border-radius: 0.5rem;
+}
+
+.menu__link--active:not(.menu__link--sublist) {
+  background: rgba(17, 147, 212, 0.08);
+}
+
+[data-theme='dark'] .menu__link--active:not(.menu__link--sublist) {
+  background: rgba(48, 171, 232, 0.12);
+}
+
+/* ── Content ────────────────────────────────────────── */
+
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4 {
+  font-family: var(--ifm-heading-font-family);
+}
+
+article header h1 {
+  font-family: var(--ifm-heading-font-family);
+}
+
+.markdown a {
+  text-decoration: none;
+}
+
+.markdown a:hover {
+  text-decoration: underline;
+}
+
+/* Table styling */
+.markdown table {
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: 1px solid var(--ifm-color-emphasis-300);
+}
+
+.markdown th {
+  background: rgba(17, 147, 212, 0.06);
+  font-weight: 600;
+}
+
+[data-theme='dark'] .markdown th {
+  background: rgba(48, 171, 232, 0.08);
+}
+
+/* ── Admonitions ────────────────────────────────────── */
+
+.alert {
+  border-radius: 0.75rem;
+  border-width: 1px;
+  border-left-width: 4px;
+}
+
+/* ── Custom Footer (matches main site) ──────────────── */
+
+.rc-footer {
+  background-color: #1b2232;
+  color: #f9fafb;
+  padding: 4rem 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+[data-theme='dark'] .rc-footer {
+  background-color: #0a0d12;
+}
+
+.rc-footer__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.rc-footer__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  .rc-footer__grid {
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+  }
+}
+
+/* Brand */
+.rc-footer__logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  text-decoration: none;
+}
+
+.rc-footer__logo:hover {
+  text-decoration: none;
+}
+
+.rc-footer__logo-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  background: linear-gradient(135deg, hsl(200, 85%, 45%) 0%, hsl(180, 70%, 40%) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.rc-footer__logo-text {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #f9fafb;
+}
+
+.rc-footer__tagline {
+  color: rgba(249, 250, 251, 0.7);
+  margin-bottom: 1.5rem;
+  max-width: 24rem;
+  line-height: 1.6;
+  font-size: 0.875rem;
+}
+
+.rc-footer__social {
+  display: flex;
+  gap: 1rem;
+}
+
+.rc-footer__social-link {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  background: rgba(249, 250, 251, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f9fafb;
+  transition: background-color 0.2s;
+}
+
+.rc-footer__social-link:hover {
+  background: hsl(200, 85%, 45%);
+  color: #ffffff;
+}
+
+/* Link columns */
+.rc-footer__heading {
+  font-weight: 600;
+  color: #f9fafb;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+.rc-footer__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.rc-footer__link {
+  color: rgba(249, 250, 251, 0.7);
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: color 0.2s;
+}
+
+.rc-footer__link:hover {
+  color: hsl(200, 85%, 45%);
+  text-decoration: none;
+}
+
+/* Bottom bar */
+.rc-footer__bottom {
+  border-top: 1px solid rgba(249, 250, 251, 0.1);
+  padding-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rc-footer__copyright {
+  color: rgba(249, 250, 251, 0.5);
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* ── Code blocks ────────────────────────────────────── */
+
+.prism-code {
+  border-radius: var(--ifm-code-border-radius);
+}
+
+code {
+  border-radius: 0.25rem;
+}
+
+/* ── Table of contents ──────────────────────────────── */
+
+.table-of-contents__link {
+  font-size: 0.8125rem;
+}
+
+.table-of-contents__link--active {
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+}
+
+/* ── Pagination ─────────────────────────────────────── */
+
+.pagination-nav__link {
+  border-radius: 0.75rem;
+  border-color: var(--ifm-color-emphasis-300);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.pagination-nav__link:hover {
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 2px 8px -2px rgba(17, 147, 212, 0.15);
+}
+
+[data-theme='dark'] .pagination-nav__link:hover {
+  box-shadow: 0 2px 8px -2px rgba(48, 171, 232, 0.2);
+}
+
+.pagination-nav__sublabel {
+  font-size: 0.75rem;
+}
+
+.pagination-nav__label {
+  font-weight: 600;
+}
