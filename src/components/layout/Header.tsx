@@ -84,16 +84,16 @@ const Header = () => {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-border/50 animate-slide-down">
             <nav className="flex flex-col gap-4">
-              <a href="/#services" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
+              <a href="/#services" onClick={() => setIsMenuOpen(false)} className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
                 Services
               </a>
-              <a href="/#testimonials" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
+              <a href="/#testimonials" onClick={() => setIsMenuOpen(false)} className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
                 Testimonials
               </a>
-              <a href="/#about" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
+              <a href="/#about" onClick={() => setIsMenuOpen(false)} className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
                 About
               </a>
-              <a href="/docs" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
+              <a href="/docs" onClick={() => setIsMenuOpen(false)} className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
                 Docs
               </a>
               <div className="pt-4 border-t border-border/50">
